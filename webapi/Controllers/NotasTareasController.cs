@@ -19,9 +19,10 @@ namespace webapi.Controllers
 
         // GET api/<NotasTareasController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public  IActionResult Get(int id)
         {
-            return "value";
+            var notatarea  =  new NotasTareasDAO().getOneById(id);
+            return notatarea == null ? NotFound() : Ok(notatarea);
         }
 
         // POST api/<NotasTareasController>
