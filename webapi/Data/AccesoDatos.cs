@@ -24,7 +24,7 @@ namespace webapi.Util
 
         public AccesoDatos()
         {
-            conn = new MySqlConnection("Server=localhost;User ID=root;Password=700r;Database=Notitas");
+            conn = new MySqlConnection("Server=localhost;User ID=user;Password=pass;Database=Notitas");
             cmd = new MySqlCommand();
             parameters =  cmd.Parameters;
 
