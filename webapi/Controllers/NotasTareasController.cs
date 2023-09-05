@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using webapi.Data;
+using webapi.Model;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -10,9 +12,9 @@ namespace webapi.Controllers
     {
         // GET: api/<NotasTareasController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<NotaTarea> Get()
         {
-            return new string[] { "value1", "value2" };
+            return new NotasTareasDAO().getAll();
         }
 
         // GET api/<NotasTareasController>/5
@@ -24,8 +26,12 @@ namespace webapi.Controllers
 
         // POST api/<NotasTareasController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] NotaTarea value)
         {
+            NotasTareasDAO dao = new NotasTareasDAO();
+            value.id = dao.agregar(value);
+            return CreatedAtAction(nameof(Get), new { id = value.id }, value);
+                
         }
 
         // PUT api/<NotasTareasController>/5
