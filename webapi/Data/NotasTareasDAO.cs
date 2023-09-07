@@ -15,6 +15,9 @@ namespace webapi.Data
                 ad.parameters.Add(new MySqlConnector.MySqlParameter("@contenido", notaTarea.contenido));
                 ad.parameters.Add(new MySqlConnector.MySqlParameter("@estatus", notaTarea.estatus));
                 ad.parameters.Add(new MySqlConnector.MySqlParameter("@tipo", notaTarea.tipo));
+                ad.parameters.Add(new MySqlConnector.MySqlParameter("@fecha", notaTarea.fecha));
+                ad.parameters.Add(new MySqlConnector.MySqlParameter("@fechaModi", notaTarea.fechaModi));
+                ad.parameters.Add(new MySqlConnector.MySqlParameter("@fechaCum", notaTarea.fechaCum));
                 ad.sentencia = "insert into NotasTareas values(default,@titulo, @contenido, @estatus, @tipo,@fecha,@fechaModi,@fechaCum);SELECT LAST_INSERT_ID()";
                 return  (ulong) ad.ejecutarSentencia(TIPOEJECUCIONSQL.ESCALAR) ;
 
@@ -45,6 +48,9 @@ namespace webapi.Data
                     nota.contenido = reader.GetString("contenido");
                     nota.estatus = reader.GetInt32("estatus");
                     nota.tipo = reader.GetInt32("tipo");
+                    nota.fecha = reader.GetString("fecha");
+                    nota.fechaModi = reader.GetString("fechaModi");
+                    nota.fechaCum = reader.GetString("fechaCum");
                 }
 
             }
