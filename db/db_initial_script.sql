@@ -13,6 +13,9 @@ fechaCum datetime null
 );
 
 
+#COMENTARIO DE PRUEBA POR QUE NO SE USAR ESTO
+
+
 CREATE TABLE IF NOT EXISTS `recordatorios` (
   `idrecordatorios` INT NOT NULL,
   `notitas_id` INT NOT NULL,
