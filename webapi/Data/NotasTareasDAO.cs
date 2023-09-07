@@ -15,8 +15,7 @@ namespace webapi.Data
                 ad.parameters.Add(new MySqlConnector.MySqlParameter("@contenido", notaTarea.contenido));
                 ad.parameters.Add(new MySqlConnector.MySqlParameter("@estatus", notaTarea.estatus));
                 ad.parameters.Add(new MySqlConnector.MySqlParameter("@tipo", notaTarea.tipo));
-                ad.sentencia = "insert into NotasTareas (titulo, contenido,estatus, tipo) " +
-                    "values(@titulo, @contenido, @estatus, @tipo);SELECT LAST_INSERT_ID();";
+                ad.sentencia = "insert into NotasTareas values(default,@titulo, @contenido, @estatus, @tipo,@fecha,@fechaModi,@fechaCum);SELECT LAST_INSERT_ID()";
                 return  (ulong) ad.ejecutarSentencia(TIPOEJECUCIONSQL.ESCALAR) ;
 
             }
