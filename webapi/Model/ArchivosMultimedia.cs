@@ -1,6 +1,6 @@
 namespace webapi.Model
 {
-    public class ArchivosTareas
+    public class ArchivosMultimedia
     {
         public ulong idArchivos { get; set; }
         public int notitas_id { get; set; }
