@@ -1,5 +1,7 @@
 ﻿    using Microsoft.AspNetCore.Mvc;
 using System.Runtime.InteropServices;
+using webapi.Data;
+using webapi.Model;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -22,9 +24,10 @@ namespace webapi.Controllers
 
         // GET api/<ArchivosMultimediaController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult Get(int id)
         {
-            return "value";
+            var multimedia = new ArchivosMultimediaDAO().GetOneById(id);
+            return multimedia == null ? NotFound() : Ok(multimedia);
         }
 
         // POST api/<ArchivosMultimediaController>
@@ -35,9 +38,40 @@ namespace webapi.Controllers
 
         // PUT api/<ArchivosMultimediaController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(int id, [FromBody] ArchivosMultimedia updatedMultimedia)
         {
+            if (updatedMultimedia == null)
+            {
+                return BadRequest("Los datos de multimedia actualizados son nulos.");
+            }
+
+            var existingMultimedia = new ArchivosMultimediaDAO().GetOneById(id);
+
+            if (existingMultimedia == null)
+            {
+                return NotFound("Multimedia no encontrada.");
+            }
+
+            // Actualiza los campos en el objeto existingMultimedia con los datos actualizados
+            existingMultimedia.url = updatedMultimedia.url;
+            existingMultimedia.ruta = updatedMultimedia.ruta;
+            existingMultimedia.descripcion = updatedMultimedia.descripcion;
+            existingMultimedia.tipo = updatedMultimedia.tipo;
+
+            // Llama al método Editar en tu DAO para guardar los cambios en la base de datos
+            ulong resultadoEdicion = new ArchivosMultimediaDAO().Editar(existingMultimedia);
+
+            if (resultadoEdicion > 0)
+            {
+                return Ok(existingMultimedia); // Devuelve la multimedia actualizada como respuesta si la edición tuvo éxito
+            }
+            else
+            {
+                // Maneja cualquier error que pueda ocurrir durante la edición
+                return StatusCode(500, "Error interno del servidor al editar la multimedia.");
+            }
         }
+
 
         // DELETE api/<ArchivosMultimediaController>/5
         [HttpDelete("{id}")]
