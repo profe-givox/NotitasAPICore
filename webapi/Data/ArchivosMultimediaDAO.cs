@@ -23,7 +23,7 @@ namespace webapi.Data
             }
         }
 
-        public ArchivosMultimedia GetOneById(ulong idArchivo)
+        public ArchivosMultimedia GetOneById(int idArchivo)
         {
             var ad = new AccesoDatos();
             ArchivosMultimedia archivoMultimedia = null;

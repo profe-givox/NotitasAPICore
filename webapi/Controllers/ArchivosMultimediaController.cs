@@ -24,9 +24,10 @@ namespace webapi.Controllers
 
         // GET api/<ArchivosMultimediaController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult Get(int id)
         {
-            return "value";
+            var multimedia = new ArchivosMultimediaDAO().GetOneById(id);
+            return multimedia == null ? NotFound() : Ok(multimedia);
         }
 
         // POST api/<ArchivosMultimediaController>
@@ -37,7 +38,7 @@ namespace webapi.Controllers
 
         // PUT api/<ArchivosMultimediaController>/5
         [HttpPut("{id}")]
-        public IActionResult Put(ulong id, [FromBody] ArchivosMultimedia updatedMultimedia)
+        public IActionResult Put(int id, [FromBody] ArchivosMultimedia updatedMultimedia)
         {
             if (updatedMultimedia == null)
             {
