@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Security.Cryptography.X509Certificates;
+using webapi.Data;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -40,8 +42,15 @@ namespace webapi.Controllers
 
         // DELETE api/<RecordatoriosController>/5
         [HttpDelete("{id}")]
+
         public void Delete(int id)
         {
+
+            // Llama al método Eliminar de tu NotasTareasDAO
+            bool eliminacionExitosa = RecordatoriosDAO.Eliminar((ulong)id);
+
         }
+
     }
+    
 }
