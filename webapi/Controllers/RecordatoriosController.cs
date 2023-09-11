@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using webapi.Data;
+using webapi.Model;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -28,8 +30,11 @@ namespace webapi.Controllers
 
         // POST api/<RecordatoriosController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] Recordatorios value)
         {
+            RecordatoriosDAO dao = new RecordatoriosDAO();
+            value.idRecordatorios = dao.agregar(value);
+            return CreatedAtAction(nameof(Get), new { id = value.idRecordatorios }, value);
         }
 
         // PUT api/<RecordatoriosController>/5
