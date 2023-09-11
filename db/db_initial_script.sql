@@ -13,11 +13,8 @@ fechaCum datetime null
 );
 
 
-#COMENTARIO DE PRUEBA POR QUE NO SE USAR ESTO
-
-
 CREATE TABLE IF NOT EXISTS `recordatorios` (
-  `idrecordatorios` INT NOT NULL,
+  `idrecordatorios` INT auto_increment,
   `notitas_id` INT NOT NULL,
   `fecha_recordatorio` DATETIME NULL,
   PRIMARY KEY (`idrecordatorios`),
@@ -30,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `recordatorios` (
 ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `archivos` (
-  `idarchivos` INT NOT NULL,
+  `idarchivos` INT auto_increment,
   `notitas_id` INT NOT NULL,
   `url` TEXT NOT NULL,
   `ruta` TEXT NULL,
@@ -45,5 +42,6 @@ CREATE TABLE IF NOT EXISTS `archivos` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
 
 select * from NotasTareas;
