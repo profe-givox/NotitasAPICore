@@ -1,5 +1,6 @@
-﻿    using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Runtime.InteropServices;
+using Microsoft.AspNetCore.Mvc;
 using webapi.Data;
 using webapi.Model;
 
@@ -17,17 +18,16 @@ namespace webapi.Controllers
 
         // GET: api/<ArchivosMultimediaController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable <ArchivosMultimedia> Get()
         {
-            return new string[] { "value1", "value2" };
+            return new ArchivosMultimediaDAO().getAll();
         }
 
-        // GET api/<ArchivosMultimediaController>/5
-        [HttpGet("{id}")]
-        public IActionResult Get(int id)
+       // GET api/<ArchivosMultimediaController>/5
+       [HttpGet("{id}")]
+        public string Get(int id)
         {
-            var multimedia = new ArchivosMultimediaDAO().GetOneById(id);
-            return multimedia == null ? NotFound() : Ok(multimedia);
+            return "value";
         }
 
         // POST api/<ArchivosMultimediaController>
@@ -38,40 +38,9 @@ namespace webapi.Controllers
 
         // PUT api/<ArchivosMultimediaController>/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] ArchivosMultimedia updatedMultimedia)
+        public void Put(int id, [FromBody] string value)
         {
-            if (updatedMultimedia == null)
-            {
-                return BadRequest("Los datos de multimedia actualizados son nulos.");
-            }
-
-            var existingMultimedia = new ArchivosMultimediaDAO().GetOneById(id);
-
-            if (existingMultimedia == null)
-            {
-                return NotFound("Multimedia no encontrada.");
-            }
-
-            // Actualiza los campos en el objeto existingMultimedia con los datos actualizados
-            existingMultimedia.url = updatedMultimedia.url;
-            existingMultimedia.ruta = updatedMultimedia.ruta;
-            existingMultimedia.descripcion = updatedMultimedia.descripcion;
-            existingMultimedia.tipo = updatedMultimedia.tipo;
-
-            // Llama al método Editar en tu DAO para guardar los cambios en la base de datos
-            ulong resultadoEdicion = new ArchivosMultimediaDAO().Editar(existingMultimedia);
-
-            if (resultadoEdicion > 0)
-            {
-                return Ok(existingMultimedia); // Devuelve la multimedia actualizada como respuesta si la edición tuvo éxito
-            }
-            else
-            {
-                // Maneja cualquier error que pueda ocurrir durante la edición
-                return StatusCode(500, "Error interno del servidor al editar la multimedia.");
-            }
         }
-
 
         // DELETE api/<ArchivosMultimediaController>/5
         [HttpDelete("{id}")]
