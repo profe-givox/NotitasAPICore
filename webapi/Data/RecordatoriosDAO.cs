@@ -18,7 +18,7 @@ namespace webapi.Data
                 ad.sentencia = "UPDATE recordatorios " +
                                 "SET fecha_recordatorio = @fecha_recordatorio" +
                                 "WHERE idRecordatorios = @idRecordatorios";
-                return (ulong)ad.ejecutarSentencia(TIPOEJECUCIONSQL.ESCALAR);
+                return (ulong)ad.ejecutarSentencia(TIPOEJECUCIONSQL.SENTENCIASQL);
             }
         }
 
