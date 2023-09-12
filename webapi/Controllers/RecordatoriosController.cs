@@ -34,7 +34,7 @@ namespace webapi.Controllers
         public IActionResult Post([FromBody] Recordatorios value)
         {
             RecordatoriosDAO dao = new RecordatoriosDAO();
-            value.idRecordatorios = dao.agregar(value);
+            value.idRecordatorios = dao.Agregar(value);
             return CreatedAtAction(nameof(Get), new { id = value.idRecordatorios }, value);
         }
 
