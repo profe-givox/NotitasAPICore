@@ -22,16 +22,28 @@ namespace webapi.Data
                 return (ulong)ad.ejecutarSentencia(TIPOEJECUCIONSQL.ESCALAR);
             }
         }
+        //public int Delete(int idArchivo,)
+        public ulong Delete(int idArchivo, String url)
+        {
+            var de = new AccesoDatos();
+            using (de)
+            {
+                de.parameters.Add(new MySqlParameter("@idArchivo", idArchivo));
+                de.parameters.Add(new MySqlParameter("@url", url));
+                de.sentencia = "DELETE @url FROM archivos WHERE idArchivo = @idArchivo";
+            }
 
-        public ArchivosMultimedia GetOneById(int idArchivo)
+            return (ulong)(int)de.ejecutarSentencia(TIPOEJECUCIONSQL.SENTENCIASQL);
+        }
+        public ArchivosMultimedia GetOneById(int idarchivos)
         {
             var ad = new AccesoDatos();
             ArchivosMultimedia archivoMultimedia = null;
 
             using (ad)
             {
-                ad.parameters.Add(new MySqlParameter("@idArchivo", idArchivo));
-                ad.sentencia = "SELECT * FROM Archivos WHERE idarchivo = @idArchivo";
+                ad.parameters.Add(new MySqlParameter("@idarchivos", idarchivos));
+                ad.sentencia = "SELECT * FROM Archivos WHERE idarchivos = @idarchivos";
 
                 var reader = (MySqlDataReader)ad.ejecutarSentencia(TIPOEJECUCIONSQL.CONSULTA);
 

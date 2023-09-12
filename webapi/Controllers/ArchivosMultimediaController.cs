@@ -75,8 +75,32 @@ namespace webapi.Controllers
 
         // DELETE api/<ArchivosMultimediaController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(int id, String url, [FromBody] ArchivosMultimedia deleteMultimedia)
+            
         {
+           if(deleteMultimedia == null)
+            {
+                return;
+            }
+            var multi = new ArchivosMultimediaDAO().GetOneById(id);
+            if(multi == null)
+            {
+                return;
+            }
+            multi.url = deleteMultimedia.url;
+            multi.idArchivos = deleteMultimedia.idArchivos;
+            multi.ruta = deleteMultimedia.ruta;
+            multi.descripcion = deleteMultimedia.descripcion;
+            multi.tipo = deleteMultimedia.tipo;
+            int resultadoDelete = (int)new ArchivosMultimediaDAO().Delete(id, url);
+            if(resultadoDelete > 0)
+            {
+                return;
+            }
+            else
+            {
+                return;
+            }
         }
     }
 }
