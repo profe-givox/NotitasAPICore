@@ -35,7 +35,7 @@ namespace webapi.Data
             NotaTarea nota = null;
             using (ad )
             {
-                ad.sentencia = "select * from NotasTareas where id=@id";
+                ad.sentencia = "SELECT * from NotasTareas WHERE id=@id";
                 ad.parameters.Add(new MySqlParameter("@id", id));
                 MySqlDataReader reader =
                     (MySqlDataReader)ad.ejecutarSentencia(TIPOEJECUCIONSQL.CONSULTA);
@@ -48,9 +48,33 @@ namespace webapi.Data
                     nota.contenido = reader.GetString("contenido");
                     nota.estatus = reader.GetInt32("estatus");
                     nota.tipo = reader.GetInt32("tipo");
-                    nota.fecha = reader.GetString("fecha");
-                    nota.fechaModi = reader.GetString("fechaModi");
-                    nota.fechaCum = reader.GetString("fechaCum");
+
+                    if (!reader.IsDBNull(reader.GetOrdinal("fecha")))
+                    {
+                        nota.fecha = reader.GetDateTime(reader.GetOrdinal("fecha"));
+                    }
+                    else
+                    {
+                        nota.fecha = DateTime.MinValue; 
+                    }
+
+                    if (!reader.IsDBNull(reader.GetOrdinal("fechaModi")))
+                    {
+                        nota.fechaModi = reader.GetDateTime(reader.GetOrdinal("fechaModi"));
+                    }
+                    else
+                    {
+                        nota.fechaModi = DateTime.MinValue; 
+                    }
+
+                    if (!reader.IsDBNull(reader.GetOrdinal("fechaCum")))
+                    {
+                        nota.fechaCum = reader.GetDateTime(reader.GetOrdinal("fechaCum"));
+                    }
+                    else
+                    {
+                        nota.fechaCum = DateTime.MinValue;
+                    }
                 }
 
             }
