@@ -35,7 +35,7 @@ namespace webapi.Data
             NotaTarea nota = null;
             using (ad )
             {
-                ad.sentencia = "SELECT * FROM NotasTareas WHERE id=@id";
+                ad.sentencia = "SELECT * from NotasTareas WHERE id=@id";
                 ad.parameters.Add(new MySqlParameter("@id", id));
                 MySqlDataReader reader =
                     (MySqlDataReader)ad.ejecutarSentencia(TIPOEJECUCIONSQL.CONSULTA);
