@@ -23,14 +23,13 @@ namespace webapi.Data
             }
         }
         //public int Delete(int idArchivo,)
-        public ulong Delete(int idArchivo, String url)
+        public ulong Delete(int idarchivos)
         {
             var de = new AccesoDatos();
             using (de)
             {
-                de.parameters.Add(new MySqlParameter("@idArchivo", idArchivo));
-                de.parameters.Add(new MySqlParameter("@url", url));
-                de.sentencia = "DELETE @url FROM archivos WHERE idArchivo = @idArchivo";
+                de.parameters.Add(new MySqlParameter("@idarchivos", idarchivos));
+                de.sentencia = "DELETE FROM archivos WHERE idarchivos = @idarchivos";
             }
 
             return (ulong)(int)de.ejecutarSentencia(TIPOEJECUCIONSQL.SENTENCIASQL);
