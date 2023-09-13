@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography.X509Certificates;
 using webapi.Data;
+using webapi.Model;
+using webapi.Util;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -42,15 +44,44 @@ namespace webapi.Controllers
 
         // DELETE api/<RecordatoriosController>/5
         [HttpDelete("{id}")]
+        
+       
+            public IActionResult Delete(int ididreordatorio, [FromBody] Recordatorios delRecordatorios)
+            {
 
-        public void Delete(int id)
-        {
+                if (delRecordatorios == null)
+                {
+                    return BadRequest("No hay datos a Eliminar.");
+                }
 
-            // Llama al método Eliminar de tu NotasTareasDAO
-            bool eliminacionExitosa = RecordatoriosDAO.Eliminar((ulong)id);
+                var existingRec = new RecordatoriosDAO().GetOneById(ididreordatorio);
 
-        }
+                if (existingRec == null)
+                {
+                    return NotFound("No se encontro el recordatorio.");
+                }
+
+                existingRec.fecha_recordatorio = delRecordatorios.fecha_recordatorio;
+
+                int resultadoEdicion = new RecordatoriosDAO().Eliminar(ididreordatorio);
+
+                if (resultadoEdicion > 0)
+                {
+                    return Ok(existingRec);
+                }
+                else
+                {
+                    return StatusCode(500, "Error al actualizar.");
+                }
+            }
+        
+
+
+
+        //EL METODO ME REGRESO UN VALUE
+       
 
     }
     
 }
+
