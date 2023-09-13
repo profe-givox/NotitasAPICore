@@ -23,15 +23,19 @@ namespace webapi.Data
                 return (ulong)ad.ejecutarSentencia(TIPOEJECUCIONSQL.ESCALAR);
             }
         }
-
-        public ArchivosMultimedia GetAll()
+        //crea un public ArchivosMultimedia que recibe el id de la nota para obtener los archivos multimedia
+        public ArchivosMultimedia GetOneByIdNota(int idNota)
         {
             var ad = new AccesoDatos();
             ArchivosMultimedia archivoMultimedia = null;
+
             using (ad)
             {
-                ad.sentencia = "SELECT * FROM Archivos";
+                ad.parameters.Add(new MySqlParameter("@idNota", idNota));
+                ad.sentencia = "SELECT * FROM Archivos WHERE notitas_id = @idNota";
+
                 var reader = (MySqlDataReader)ad.ejecutarSentencia(TIPOEJECUCIONSQL.CONSULTA);
+
                 while (reader.Read())
                 {
                     archivoMultimedia = new ArchivosMultimedia
@@ -45,9 +49,10 @@ namespace webapi.Data
                     };
                 }
             }
-            return archivoMultimedia;
-            }
 
+            return archivoMultimedia;
+        }
+       
 
 
 
