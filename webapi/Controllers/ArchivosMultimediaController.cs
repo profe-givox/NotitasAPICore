@@ -23,6 +23,24 @@ namespace webapi.Controllers
         }
 
         // GET api/<ArchivosMultimediaController>/5
+        //crea un public IActionResult que recibe el id de la nota para obtener los archivos multimedia
+
+
+        [HttpGet("nota/{id}")]
+        public IActionResult GetByNotaId(int id)
+        {
+            var multimediaList = new ArchivosMultimediaDAO().GetOneByIdNota(id);
+
+            if (multimediaList == null)
+            {
+                return NotFound("No se encontraron archivos multimedia para la nota con el ID proporcionado.");
+            }
+
+            return Ok(multimediaList);
+        }
+
+
+
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
