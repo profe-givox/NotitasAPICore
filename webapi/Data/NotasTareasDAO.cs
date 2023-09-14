@@ -20,7 +20,6 @@ namespace webapi.Data
                 ad.parameters.Add(new MySqlConnector.MySqlParameter("@fechaCum", notaTarea.fechaCum));
                 ad.sentencia = "insert into NotasTareas values(default,@titulo, @contenido, @estatus, @tipo,@fecha,@fechaModi,@fechaCum);SELECT LAST_INSERT_ID()";
                 return  (ulong) ad.ejecutarSentencia(TIPOEJECUCIONSQL.ESCALAR) ;
-
             }
         }
 
@@ -103,5 +102,7 @@ namespace webapi.Data
 
             return nota;
         }
+
+      
     }
 }
