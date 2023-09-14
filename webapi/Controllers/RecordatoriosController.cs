@@ -31,8 +31,11 @@ namespace webapi.Controllers
 
         // POST api/<RecordatoriosController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] Recordatorios value)
         {
+            RecordatoriosDAO dao = new RecordatoriosDAO();
+            value.idRecordatorios = dao.Agregar(value);
+            return CreatedAtAction(nameof(Get), new { id = value.idRecordatorios }, value);
         }
 
         // PUT api/<RecordatoriosController>/5
