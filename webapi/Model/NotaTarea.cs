@@ -10,6 +10,5 @@
         public DateTime fecha { get; set; }
         public DateTime fechaModi { get; set; }
         public DateTime fechaCum { get; set; }
-
     }
 }

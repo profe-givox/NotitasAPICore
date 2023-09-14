@@ -26,7 +26,29 @@ namespace webapi.Data
 
         internal IEnumerable<NotaTarea> getAll()
         {
-            throw new NotImplementedException();
+            List<NotaTarea> notasTareas = new List<NotaTarea>();
+            var ad = new AccesoDatos();
+
+            using (ad)
+            {
+                ad.sentencia = "SELECT * FROM NotasTareas";
+                MySqlDataReader reader = (MySqlDataReader)ad.ejecutarSentencia(TIPOEJECUCIONSQL.CONSULTA);
+
+                while (reader.Read())
+                {
+                    NotaTarea nota = new NotaTarea
+                    {
+                        id = reader.GetUInt64("id"),
+                        titulo = reader.IsDBNull(reader.GetOrdinal("titulo")) ? string.Empty : reader.GetString("titulo"),
+                        contenido = reader.IsDBNull(reader.GetOrdinal("contenido")) ? null : reader.GetString("contenido"),
+                        estatus = reader.IsDBNull(reader.GetOrdinal("estatus")) ? 0 : reader.GetInt32("estatus"),
+                        tipo = reader.IsDBNull(reader.GetOrdinal("tipo")) ? 1 : reader.GetInt32("tipo")
+                    };
+                    notasTareas.Add(nota);
+                }
+            }
+
+            return notasTareas;
         }
 
         public NotaTarea getOneById(int id)
@@ -35,7 +57,7 @@ namespace webapi.Data
             NotaTarea nota = null;
             using (ad )
             {
-                ad.sentencia = "select * from NotasTareas where id=@id";
+                ad.sentencia = "SELECT * from NotasTareas WHERE id=@id";
                 ad.parameters.Add(new MySqlParameter("@id", id));
                 MySqlDataReader reader =
                     (MySqlDataReader)ad.ejecutarSentencia(TIPOEJECUCIONSQL.CONSULTA);
@@ -48,9 +70,33 @@ namespace webapi.Data
                     nota.contenido = reader.GetString("contenido");
                     nota.estatus = reader.GetInt32("estatus");
                     nota.tipo = reader.GetInt32("tipo");
-                    nota.fecha = reader.GetString("fecha");
-                    nota.fechaModi = reader.GetString("fechaModi");
-                    nota.fechaCum = reader.GetString("fechaCum");
+
+                    if (!reader.IsDBNull(reader.GetOrdinal("fecha")))
+                    {
+                        nota.fecha = reader.GetDateTime(reader.GetOrdinal("fecha"));
+                    }
+                    else
+                    {
+                        nota.fecha = DateTime.MinValue; 
+                    }
+
+                    if (!reader.IsDBNull(reader.GetOrdinal("fechaModi")))
+                    {
+                        nota.fechaModi = reader.GetDateTime(reader.GetOrdinal("fechaModi"));
+                    }
+                    else
+                    {
+                        nota.fechaModi = DateTime.MinValue; 
+                    }
+
+                    if (!reader.IsDBNull(reader.GetOrdinal("fechaCum")))
+                    {
+                        nota.fechaCum = reader.GetDateTime(reader.GetOrdinal("fechaCum"));
+                    }
+                    else
+                    {
+                        nota.fechaCum = DateTime.MinValue;
+                    }
                 }
 
             }
