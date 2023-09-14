@@ -20,13 +20,34 @@ namespace webapi.Data
                 ad.parameters.Add(new MySqlConnector.MySqlParameter("@fechaCum", notaTarea.fechaCum));
                 ad.sentencia = "insert into NotasTareas values(default,@titulo, @contenido, @estatus, @tipo,@fecha,@fechaModi,@fechaCum);SELECT LAST_INSERT_ID()";
                 return  (ulong) ad.ejecutarSentencia(TIPOEJECUCIONSQL.ESCALAR) ;
-
             }
         }
 
         internal IEnumerable<NotaTarea> getAll()
         {
-            throw new NotImplementedException();
+            List<NotaTarea> notasTareas = new List<NotaTarea>();
+            var ad = new AccesoDatos();
+
+            using (ad)
+            {
+                ad.sentencia = "SELECT * FROM NotasTareas";
+                MySqlDataReader reader = (MySqlDataReader)ad.ejecutarSentencia(TIPOEJECUCIONSQL.CONSULTA);
+
+                while (reader.Read())
+                {
+                    NotaTarea nota = new NotaTarea
+                    {
+                        id = reader.GetUInt64("id"),
+                        titulo = reader.IsDBNull(reader.GetOrdinal("titulo")) ? string.Empty : reader.GetString("titulo"),
+                        contenido = reader.IsDBNull(reader.GetOrdinal("contenido")) ? null : reader.GetString("contenido"),
+                        estatus = reader.IsDBNull(reader.GetOrdinal("estatus")) ? 0 : reader.GetInt32("estatus"),
+                        tipo = reader.IsDBNull(reader.GetOrdinal("tipo")) ? 1 : reader.GetInt32("tipo")
+                    };
+                    notasTareas.Add(nota);
+                }
+            }
+
+            return notasTareas;
         }
 
         public NotaTarea getOneById(int id)
@@ -81,5 +102,7 @@ namespace webapi.Data
 
             return nota;
         }
+
+      
     }
 }
