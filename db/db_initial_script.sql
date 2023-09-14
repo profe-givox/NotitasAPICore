@@ -58,3 +58,6 @@ select * from recordatorios;
 select * from notastareas;
 
 #Delete from recordatorios where idrecordatorios=1;
+
+select * from NotasTareas;
+

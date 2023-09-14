@@ -1,13 +1,12 @@
-﻿using webapi.Model;
 using MySqlConnector;
+using webapi.Model;
+
 using webapi.Util;
 
 namespace webapi.Data
 {
     public class RecordatoriosDAO
     {
-        //DESARROLLAR AQUI EL METODO ASIGNADO EN CLASE
-
         public  int Eliminar(int  idreordatorio)
         {
             var ad = new AccesoDatos();
@@ -31,7 +30,35 @@ namespace webapi.Data
                 return (int)ad.ejecutarSentencia(TIPOEJECUCIONSQL.SENTENCIASQL);
                 
             }
+        }
 
+        public RecordatoriosDAO() { }
+        public ulong Agregar(Recordatorios rec)
+        {
+            var ad = new AccesoDatos();
+            using (ad)
+            {
+                ad.parameters.Add(new MySqlConnector.MySqlParameter("@notitas_id", rec.notitas_id));
+                ad.parameters.Add(new MySqlConnector.MySqlParameter("@fecha_recordatorio", rec.fecha_recordatorio));
+                ad.sentencia = "insert into recordatorios (notitas_id, fecha_recordatorio) " +
+                    "values(@notitas_id, @fecha_recordatorio);SELECT LAST_INSERT_ID();";
+                return (ulong)ad.ejecutarSentencia(TIPOEJECUCIONSQL.ESCALAR);
+            }
+        }
+
+        public ulong Editar(Recordatorios rec)
+        {
+            var ad = new AccesoDatos();
+            using (ad)
+            {
+                ad.parameters.Add(new MySqlParameter("@idRecordatorios", rec.idRecordatorios));
+                ad.parameters.Add(new MySqlParameter("@notitas_id", rec.notitas_id));
+                ad.parameters.Add(new MySqlParameter("@fecha_recordatorio", rec.fecha_recordatorio));
+                ad.sentencia = "UPDATE recordatorios " +
+                                "SET fecha_recordatorio = @fecha_recordatorio" +
+                                "WHERE idRecordatorios = @idRecordatorios";
+                return (ulong)ad.ejecutarSentencia(TIPOEJECUCIONSQL.SENTENCIASQL);
+            }
         }
 
         public Recordatorios GetOneById(int idRecordatorio)
@@ -50,52 +77,18 @@ namespace webapi.Data
                 {
                     recordatorios = new Recordatorios
                     {
-                        idRecordatorios = reader.GetUInt64("idRecordatorios")
+                        
                        // notitas_id = reader.GetInt32("notitas_id"),
                        // fecha_recordatorio = reader.GetString("fecha_recordatorio"),
+                        idRecordatorios = reader.GetUInt64("idRecordatorios"),
+                        notitas_id = reader.GetInt32("notitas_id"),
+                        fecha_recordatorio = reader.GetString("fecha_recordatorio"),
                     };
                 }
             }
 
             return recordatorios;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        public ulong agregar(NotaTarea notaTarea)
-        {
-            var ad = new AccesoDatos();
-            using (ad)
-            {
-                ad.parameters.Add(new MySqlConnector.MySqlParameter("@titulo", notaTarea.titulo));
-                ad.parameters.Add(new MySqlConnector.MySqlParameter("@contenido", notaTarea.contenido));
-                ad.parameters.Add(new MySqlConnector.MySqlParameter("@estatus", notaTarea.estatus));
-                ad.parameters.Add(new MySqlConnector.MySqlParameter("@tipo", notaTarea.tipo));
-                ad.sentencia = "insert into NotasTareas (titulo, contenido,estatus, tipo) " +
-                    "values(@titulo, @contenido, @estatus, @tipo);SELECT LAST_INSERT_ID();";
-                return (ulong)ad.ejecutarSentencia(TIPOEJECUCIONSQL.ESCALAR);
-
-            }
-        }
-
-
-
-
-
-
-
+      
     }
 }

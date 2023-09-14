@@ -23,6 +23,24 @@ namespace webapi.Controllers
         }
 
         // GET api/<ArchivosMultimediaController>/5
+        //crea un public IActionResult que recibe el id de la nota para obtener los archivos multimedia
+
+
+        [HttpGet("nota/{id}")]
+        public IActionResult GetByNotaId(int id)
+        {
+            var multimediaList = new ArchivosMultimediaDAO().GetOneByIdNota(id);
+
+            if (multimediaList == null)
+            {
+                return NotFound("No se encontraron archivos multimedia para la nota con el ID proporcionado.");
+            }
+
+            return Ok(multimediaList);
+        }
+
+
+
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -75,8 +93,32 @@ namespace webapi.Controllers
 
         // DELETE api/<ArchivosMultimediaController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(int id,  [FromBody] ArchivosMultimedia deleteMultimedia)
         {
+            if (deleteMultimedia == null)
+            {
+                return;
+            }
+            var multi = new ArchivosMultimediaDAO().GetOneById(id);
+            if (multi == null)
+            {
+                return;
+            }
+            multi.url = deleteMultimedia.url;
+            multi.idArchivos = deleteMultimedia.idArchivos;
+            multi.ruta = deleteMultimedia.ruta;
+            multi.descripcion = deleteMultimedia.descripcion;
+            multi.tipo = deleteMultimedia.tipo;
+            int resultadoDelete = (int)new ArchivosMultimediaDAO().Delete(id);
+            if (resultadoDelete > 0)
+            {
+                return; 
+            }
+            else
+            {
+                return;
+            }
         }
     }
+
 }
