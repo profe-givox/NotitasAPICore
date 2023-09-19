@@ -6,6 +6,19 @@ namespace webapi.Data
 {
     public class ArchivosMultimediaDAO
     {
+        public ulong Agregar(ArchivosMultimedia archivosMultimedia) {
+            var ad = new AccesoDatos();
+            using (ad) {
+                ad.parameters.Add(new MySqlParameter("@notitas_id", archivosMultimedia.notitas_id));
+                ad.parameters.Add(new MySqlParameter("@idArchivos", archivosMultimedia.idArchivos));
+                ad.parameters.Add(new MySqlParameter("@url", archivosMultimedia.url));
+                ad.parameters.Add(new MySqlParameter("@ruta", archivosMultimedia.ruta));
+                ad.parameters.Add(new MySqlParameter("@descripcion", archivosMultimedia.descripcion));
+                ad.parameters.Add(new MySqlParameter("@tipo", archivosMultimedia.tipo));
+                ad.sentencia = "insert into Archivos values(default, @idArchivo, @url, @ruta, @descripcion, @tipo); SELECT LAST_INSERT_ID()";
+                return (ulong)ad.ejecutarSentencia(TIPOEJECUCIONSQL.ESCALAR);
+            }
+        }
 
         public ulong Editar(ArchivosMultimedia multi)
         {
