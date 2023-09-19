@@ -13,11 +13,8 @@ fechaCum datetime null
 );
 
 
-#COMENTARIO DE PRUEBA POR QUE NO SE USAR ESTO
-
-
 CREATE TABLE IF NOT EXISTS `recordatorios` (
-  `idrecordatorios` INT NOT NULL,
+  `idrecordatorios` INT auto_increment,
   `notitas_id` INT NOT NULL,
   `fecha_recordatorio` DATETIME NULL,
   PRIMARY KEY (`idrecordatorios`),
@@ -30,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `recordatorios` (
 ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `archivos` (
-  `idarchivos` INT NOT NULL,
+  `idarchivos` INT auto_increment,
   `notitas_id` INT NOT NULL,
   `url` TEXT NOT NULL,
   `ruta` TEXT NULL,
@@ -46,4 +43,21 @@ CREATE TABLE IF NOT EXISTS `archivos` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+
+INSERT INTO NotasTareas (titulo, contenido, estatus, tipo, fecha, fechaModi, fechaCum)
+VALUES ("Hola", "Nota", 1, 2, "2022-01-10", "2022-01-9", "2022-01-12");
+INSERT INTO NotasTareas (titulo, contenido, estatus, tipo, fecha, fechaModi, fechaCum)
+VALUES ("Hola2", "Nota2", 2, 3, "2000-08-11", "2021-03-03", "1998-03-12");
+
+insert into Recordatorios (notitas_id, fecha_recordatorio)
+values (1, "2021-01-9");
+insert into Recordatorios (notitas_id, fecha_recordatorio)
+values (2, "2021-03-12");
+
+select * from recordatorios;
+select * from notastareas;
+
+#Delete from recordatorios where idrecordatorios=1;
+
 select * from NotasTareas;
+

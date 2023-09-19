@@ -15,10 +15,11 @@ namespace webapi.Data
                 ad.parameters.Add(new MySqlConnector.MySqlParameter("@contenido", notaTarea.contenido));
                 ad.parameters.Add(new MySqlConnector.MySqlParameter("@estatus", notaTarea.estatus));
                 ad.parameters.Add(new MySqlConnector.MySqlParameter("@tipo", notaTarea.tipo));
-                ad.sentencia = "insert into NotasTareas (titulo, contenido,estatus, tipo) " +
-                    "values(@titulo, @contenido, @estatus, @tipo);SELECT LAST_INSERT_ID();";
+                ad.parameters.Add(new MySqlConnector.MySqlParameter("@fecha", notaTarea.fecha));
+                ad.parameters.Add(new MySqlConnector.MySqlParameter("@fechaModi", notaTarea.fechaModi));
+                ad.parameters.Add(new MySqlConnector.MySqlParameter("@fechaCum", notaTarea.fechaCum));
+                ad.sentencia = "insert into NotasTareas values(default,@titulo, @contenido, @estatus, @tipo,@fecha,@fechaModi,@fechaCum);SELECT LAST_INSERT_ID()";
                 return  (ulong) ad.ejecutarSentencia(TIPOEJECUCIONSQL.ESCALAR) ;
-
             }
         }
         //GEt All
@@ -59,7 +60,7 @@ namespace webapi.Data
             NotaTarea nota = null;
             using (ad )
             {
-                ad.sentencia = "select * from NotasTareas where id=@id";
+                ad.sentencia = "SELECT * from NotasTareas WHERE id=@id";
                 ad.parameters.Add(new MySqlParameter("@id", id));
                 MySqlDataReader reader =
                     (MySqlDataReader)ad.ejecutarSentencia(TIPOEJECUCIONSQL.CONSULTA);
@@ -72,12 +73,38 @@ namespace webapi.Data
                     nota.contenido = reader.GetString("contenido");
                     nota.estatus = reader.GetInt32("estatus");
                     nota.tipo = reader.GetInt32("tipo");
+
+                    if (!reader.IsDBNull(reader.GetOrdinal("fecha")))
+                    {
+                        nota.fecha = reader.GetDateTime(reader.GetOrdinal("fecha"));
+                    }
+                    else
+                    {
+                        nota.fecha = DateTime.MinValue; 
+                    }
+
+                    if (!reader.IsDBNull(reader.GetOrdinal("fechaModi")))
+                    {
+                        nota.fechaModi = reader.GetDateTime(reader.GetOrdinal("fechaModi"));
+                    }
+                    else
+                    {
+                        nota.fechaModi = DateTime.MinValue; 
+                    }
+
+                    if (!reader.IsDBNull(reader.GetOrdinal("fechaCum")))
+                    {
+                        nota.fechaCum = reader.GetDateTime(reader.GetOrdinal("fechaCum"));
+                    }
+                    else
+                    {
+                        nota.fechaCum = DateTime.MinValue;
+                    }
                 }
 
             }
 
             return nota;
         }
-        
     }
 }

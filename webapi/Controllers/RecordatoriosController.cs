@@ -1,4 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Cryptography.X509Certificates;
+using webapi.Util;
+using webapi.Data;
+using System.Runtime.InteropServices;
+using webapi.Model;
+
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -28,20 +34,85 @@ namespace webapi.Controllers
 
         // POST api/<RecordatoriosController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] Recordatorios value)
         {
+            RecordatoriosDAO dao = new RecordatoriosDAO();
+            value.idRecordatorios = dao.Agregar(value);
+            return CreatedAtAction(nameof(Get), new { id = value.idRecordatorios }, value);
         }
 
         // PUT api/<RecordatoriosController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(int id, [FromBody] Recordatorios actRecordatorios)
         {
+
+            if (actRecordatorios == null)
+            {
+                return BadRequest("No hay datos a actualizar.");
+            }
+
+            var existingRec = new RecordatoriosDAO().GetOneById(id);
+
+            if (existingRec == null)
+            {
+                return NotFound("No se encontro el recordatorio.");
+            }
+
+            existingRec.fecha_recordatorio = actRecordatorios.fecha_recordatorio;
+
+            ulong resultadoEdicion = new RecordatoriosDAO().Editar(existingRec);
+
+            if (resultadoEdicion > 0)
+            {
+                return Ok(existingRec);
+            }
+            else
+            {
+                return StatusCode(500, "Error al actualizar.");
+            }
         }
+
 
         // DELETE api/<RecordatoriosController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        
+       
+            public IActionResult Delete(int ididreordatorio, [FromBody] Recordatorios delRecordatorios)
+            {
+
+                if (delRecordatorios == null)
+                {
+                    return BadRequest("No hay datos a Eliminar.");
+                }
+
+                var existingRec = new RecordatoriosDAO().GetOneById(ididreordatorio);
+
+                if (existingRec == null)
+                {
+                    return NotFound("No se encontro el recordatorio.");
+                }
+
+                existingRec.fecha_recordatorio = delRecordatorios.fecha_recordatorio;
+
+                int resultadoEdicion = new RecordatoriosDAO().Eliminar(ididreordatorio);
+
+                if (resultadoEdicion > 0)
+                {
+                    return Ok(existingRec);
+                }
+                else
+                {
+                    return StatusCode(500, "Error al actualizar.");
+                }
+            }
+        
+
+
+
+        //EL METODO ME REGRESO UN VALUE
+       
+
     }
+    
 }
+
