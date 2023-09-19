@@ -22,7 +22,7 @@ namespace webapi.Data
                 return  (ulong) ad.ejecutarSentencia(TIPOEJECUCIONSQL.ESCALAR) ;
             }
         }
-
+        //GEt All
         internal IEnumerable<NotaTarea> getAll()
         {
             List<NotaTarea> notasTareas = new List<NotaTarea>();
@@ -37,11 +37,15 @@ namespace webapi.Data
                 {
                     NotaTarea nota = new NotaTarea
                     {
+                        
                         id = reader.GetUInt64("id"),
                         titulo = reader.IsDBNull(reader.GetOrdinal("titulo")) ? string.Empty : reader.GetString("titulo"),
                         contenido = reader.IsDBNull(reader.GetOrdinal("contenido")) ? null : reader.GetString("contenido"),
-                        estatus = reader.IsDBNull(reader.GetOrdinal("estatus")) ? 0 : reader.GetInt32("estatus"),
-                        tipo = reader.IsDBNull(reader.GetOrdinal("tipo")) ? 1 : reader.GetInt32("tipo")
+                        estatus = reader.IsDBNull(reader.GetOrdinal("estatus")) ? (int?)null : reader.GetInt32("estatus"),
+                        tipo = reader.IsDBNull(reader.GetOrdinal("tipo")) ? 1 : reader.GetInt32("tipo"),
+                        fecha = reader.IsDBNull(reader.GetOrdinal("fecha")) ? (DateTime?)null : reader.GetDateTime("fecha"),
+                        fechaModi = reader.IsDBNull(reader.GetOrdinal("fechaModi")) ? (DateTime?)null : reader.GetDateTime("fechaModi"),
+                        fechaCum = reader.IsDBNull(reader.GetOrdinal("fechaCum")) ? (DateTime?)null : reader.GetDateTime("fechaCum")
                     };
                     notasTareas.Add(nota);
                 }
@@ -102,7 +106,5 @@ namespace webapi.Data
 
             return nota;
         }
-
-      
     }
 }
