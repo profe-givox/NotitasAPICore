@@ -50,8 +50,19 @@ namespace webapi.Controllers
 
         // POST api/<ArchivosMultimediaController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] ArchivosMultimedia value)
         {
+            if (value == null)
+            {
+                return BadRequest("Los datos de multimedia son nulos.");
+            }
+            else
+            {
+                ArchivosMultimediaDAO archivosMultimediaDAO = new ArchivosMultimediaDAO();
+                value.idArchivos = archivosMultimediaDAO.Agregar(value);
+                return CreatedAtAction(nameof(Get), new { id = value.idArchivos }, value);
+            }
+          
         }
 
         // PUT api/<ArchivosMultimediaController>/5

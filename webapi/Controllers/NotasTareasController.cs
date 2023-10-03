@@ -22,7 +22,8 @@ namespace webapi.Controllers
         public  IActionResult Get(int id)
         {
             var notatarea  =  new NotasTareasDAO().getOneById(id);
-            return notatarea == null ? NotFound() : Ok(notatarea);
+            return notatarea == null ?
+            NotFound() : Ok(notatarea);
         }
 
         // POST api/<NotasTareasController>
