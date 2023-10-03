@@ -44,7 +44,7 @@ namespace webapi.Controllers
 
         // DELETE api/<NotasTareasController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id, [FromBody] NotaTarea value)
+        public IActionResult Delete(int id, [FromBody] NotaTarea value)
         {
 
             if (value == null)
@@ -52,7 +52,7 @@ namespace webapi.Controllers
                 return BadRequest("No hay datos a Eliminar.");
             }
 
-            var existingRec = new NotasTareasDAO().GetOneById(idid);
+            var existingRec = new NotasTareasDAO().getOneById(id);
 
             if (existingRec == null)
             {
@@ -61,7 +61,7 @@ namespace webapi.Controllers
 
             existingRec.fecha = value.fecha;
 
-            int resultadoEdicion = new NotasTareasDAO().Eliminar(idid);
+            int resultadoEdicion = new NotasTareasDAO().DeleteOneById(id);
 
             if (resultadoEdicion > 0)
             {
