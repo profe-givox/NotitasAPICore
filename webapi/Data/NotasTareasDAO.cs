@@ -126,5 +126,23 @@ namespace webapi.Data
 
             return nota;
         }
+
+        public int DeleteOneById(int id)
+        {
+            var ad = new AccesoDatos();
+            NotaTarea nota = null;
+
+            using (ad)
+            {
+
+                ad.parameters.Add(new MySqlParameter("@id", id));
+
+                ad.sentencia = "DELETE FROM recordatorios WHERE id =@id";
+
+
+                return (int)ad.ejecutarSentencia(TIPOEJECUCIONSQL.SENTENCIASQL);
+
+            }
+        }
     }
 }

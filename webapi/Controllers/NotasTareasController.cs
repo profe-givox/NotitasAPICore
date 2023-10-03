@@ -44,8 +44,33 @@ namespace webapi.Controllers
 
         // DELETE api/<NotasTareasController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(int id, [FromBody] NotaTarea value)
         {
+
+            if (value == null)
+            {
+                return BadRequest("No hay datos a Eliminar.");
+            }
+
+            var existingRec = new NotasTareasDAO().GetOneById(idid);
+
+            if (existingRec == null)
+            {
+                return NotFound("No se encontro la Nota/Tarea.");
+            }
+
+            existingRec.fecha = value.fecha;
+
+            int resultadoEdicion = new NotasTareasDAO().Eliminar(idid);
+
+            if (resultadoEdicion > 0)
+            {
+                return Ok(existingRec);
+            }
+            else
+            {
+                return StatusCode(500, "Error al actualizar.");
+            }
         }
     }
 }
