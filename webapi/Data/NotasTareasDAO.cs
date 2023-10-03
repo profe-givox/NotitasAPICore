@@ -1,4 +1,4 @@
-﻿using MySqlConnector;
+using MySqlConnector;
 using webapi.Model;
 using webapi.Util;
 
@@ -22,7 +22,27 @@ namespace webapi.Data
                 return  (ulong) ad.ejecutarSentencia(TIPOEJECUCIONSQL.ESCALAR) ;
             }
         }
-        //GEt All
+
+
+	      public ulong Editar(NotaTarea notaTarea)
+        {
+            var ad = new AccesoDatos();
+            using (ad)
+            {
+                ad.parameters.Add(new MySqlConnector.MySqlParameter("@titulo", notaTarea.titulo));
+                ad.parameters.Add(new MySqlConnector.MySqlParameter("@contenido", notaTarea.contenido));
+                ad.parameters.Add(new MySqlConnector.MySqlParameter("@estatus", notaTarea.estatus));
+                ad.parameters.Add(new MySqlConnector.MySqlParameter("@tipo", notaTarea.tipo));
+                ad.parameters.Add(new MySqlConnector.MySqlParameter("@fecha", notaTarea.fecha));
+                ad.parameters.Add(new MySqlConnector.MySqlParameter("@fechaModi", notaTarea.fechaModi));
+                ad.parameters.Add(new MySqlConnector.MySqlParameter("@fechaCum", notaTarea.fechaCum));
+                ad.sentencia = "UPDATE Archivos SET titulo = @titulo, contenido = @contenido," +
+                               "estatus = @estatus, tipo = @tipo, fecha = @fecha, fechaModi = @fechaModi " +
+                               "fechaCum = @fechaCum";
+                return (ulong)ad.ejecutarSentencia(TIPOEJECUCIONSQL.ESCALAR);
+            }
+        }
+
         internal IEnumerable<NotaTarea> getAll()
         {
             List<NotaTarea> notasTareas = new List<NotaTarea>();
